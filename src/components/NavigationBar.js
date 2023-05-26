@@ -1,13 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
-
+import { addDoc, collection, query, where, getDocs  } from "@firebase/firestore"
+import { firestore } from '../firebase'
 import { useAuth } from '../contexts/AuthContext'
+import { getRoles } from '@testing-library/react'
 
 export default function NavigationBar() {
 
-    //setting our role
-    const [uiRole, setUiRole] = useState();
-    const {role} = useAuth()
+       //setting our role
+       const [role, setRole] = useState('')
+       const {currentUser} = useAuth();
+       let currentRole;
+
+       const getUserRole = async () =>{
+           const q = query(collection(firestore,'users_roles'), where('uid','==',currentUser.uid));
+   
+           const querySnapshot = await getDocs(q);
+   
+           querySnapshot.forEach((doc) =>{
+               console.log('setting the role');
+               setRole(doc.data().role)
+               currentRole = doc.data().role
+               console.log('the role in state inside snapsjot', role);
+           })
+       }
+
+       getUserRole();
 
   return (
     <>
@@ -15,7 +33,6 @@ export default function NavigationBar() {
             <div className="container-fluid">
 
                 <Link to={'/form'} class="navbar-brand">2T Innovation</Link>
-
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -31,19 +48,14 @@ export default function NavigationBar() {
                             </li>
 
                             { 
-                                role === "Editor" || role === " "  ?
+                                role === 'Admin' ?
                 
                                 <li className="nav-item">
-                                    <Link className='nav-item' to={"/adminDash"}>
+                                    <Link className='nav-item nav-link' to={"/adminDash"}>
                                         View Dashboard
                                     </Link>
-                                </li> : 
+                                </li> : <></>
 
-                                <li className="nav-item" style={{display: 'none'}} >
-                                    <Link className='nav-item' to={"/adminDash"} class="nav-link">
-                                        View Dashboard
-                                    </Link>
-                                </li>
                             }
                         </ul>
                     </div>

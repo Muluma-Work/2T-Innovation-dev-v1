@@ -23,7 +23,7 @@ export default function Login() {
             setError('')
             setIsLoading(true)
             await login(emailRef.current.value, passwordRef.current.value)
-            navigate('/adminDash')
+            navigate('/form')
         }catch(err){
             setError('Unable to login')
             console.log(err.message);
