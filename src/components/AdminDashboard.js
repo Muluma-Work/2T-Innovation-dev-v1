@@ -16,35 +16,30 @@ export default function AdminDashboard() {
     const [error, setError] = useState("");
     const {currentUser} = useAuth();
     const navigate = useNavigate();
+    const [numberOfUsers, setNumberOfUsers] = useState(0)
     
     const [userCounts, setUserCounts] = useState({});
 
     // Cout number of forms submitted
-    const countSubmissionsByUser = () => {
+    // const countSubmissionsByUser = () => {
 
-        const counts = {}
+    //     const counts = {}
 
-        forms.forEach( (form) =>{
+    //     forms.forEach( (form) =>{
 
-          const formCurrentUser = form.currentUser;
+    //       const formCurrentUser = form.currentUser;
 
-          if(counts[formCurrentUser]){
-            counts[formCurrentUser]++;
-          }else{
-            counts[formCurrentUser] = 1
-          }
+    //       if(counts[formCurrentUser]){
+    //         counts[formCurrentUser]++;
+    //       }else{
+    //         counts[formCurrentUser] = 1
+    //       }
 
-        })
+    //     })
 
-        return counts;
+    //     return counts;
    
-    }
-
-    // const finalCount = countSubmissionsByUser();
-
-    // setUserCounts(finalCount);
-
-    // let numberOfForms=0;
+    // }
 
     // Employment status
     let employed = 0;
@@ -72,11 +67,12 @@ export default function AdminDashboard() {
                     id:doc.id 
                 }));
   
-                setForms(newData);   
+                setForms(newData);
+                
+                const userCounts = countSubmissionsByUser();
+                setUserCounts(userCounts);
                 
             } 
-        
-            // getDocs()
         )
     }
 
@@ -156,6 +152,23 @@ export default function AdminDashboard() {
         }
       }
 
+      const countSubmissionsByUser = () => {
+        const counts = {};
+        forms.forEach((form) => {
+          const formCurrentUser = form.currentUser;
+    
+          if (counts[formCurrentUser]) {
+            counts[formCurrentUser]++;
+          } else {
+            counts[formCurrentUser] = 1;
+          }
+        });
+
+        return counts;
+      }
+
+
+
   return (  
     <>
       <NavigationBar />
@@ -200,10 +213,10 @@ export default function AdminDashboard() {
 
     </div>
 
-  <div className="row">
-    <p className='card-title text-center'>Employment Status</p>
-    <div className="col-lg-6">
-    <div className='text-center'>
+    <div className="row">
+      <p className='card-title text-center'>Employment Status</p>
+      <div className="col-lg-6">
+      <div className='text-center'>
         <div className="card">
           <div className="card-body">
             <h5 className="card-title">Unemployed</h5>
@@ -329,36 +342,19 @@ export default function AdminDashboard() {
                <table className="table table-hover">
                    <thead>
                        <tr>
-                        <th scope='col' >No.</th>
-                       <th scope="col">User Email</th>
-                       <th scope="col">Number of forms submitted</th>
+                          <th scope="col">User Email</th>
+                          <th scope="col">Number of forms submitted</th>
                        </tr>
                    </thead>
-
-
                    <tbody>
-                       {/* Table data for No. and Email */}
-                       {
-                            forms.map( (form, i) =>(
-                                <tr key={i} >
-                                  <td>{i+1}</td>
-                                  <td >{form.currentUser}</td>
-                                </tr>
-                            ))
-                       }
-
-                       {/* Table data for Number of submmited forms */}
-
-                       {
-                          
-                       }
-                     
+                      {Object.entries(userCounts).map(([currentUser, count]) => (
+                        <tr key={currentUser}>
+                          <td>{currentUser}</td>
+                          <td>{count}</td>
+                        </tr>
+                      ))}
                    </tbody>
                </table>
-                  {
-                    // Object.entries(user)
-                  }
-
            </div>
 
        </div>
