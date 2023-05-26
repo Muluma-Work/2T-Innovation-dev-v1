@@ -16,7 +16,6 @@ export default function AdminDashboard() {
     const [error, setError] = useState("");
     const {currentUser} = useAuth();
     const navigate = useNavigate();
-    const [numberOfUsers, setNumberOfUsers] = useState(0)
     
     const [userCounts, setUserCounts] = useState({});
 
@@ -80,7 +79,7 @@ export default function AdminDashboard() {
 
         fetchPost()
 
-    },[]);
+    });
 
     //New Implemetation
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
