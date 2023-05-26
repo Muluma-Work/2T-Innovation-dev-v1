@@ -79,7 +79,7 @@ export default function AdminDashboard() {
 
         fetchPost()
 
-    });
+    }, []);
 
     //New Implemetation
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
@@ -345,11 +345,11 @@ export default function AdminDashboard() {
                           <th scope="col">Number of forms submitted</th>
                        </tr>
                    </thead>
-                   <tbody>
+                   <tbody >
                       {Object.entries(userCounts).map(([currentUser, count]) => (
                         <tr key={currentUser}>
                           <td>{currentUser}</td>
-                          <td>{count}</td>
+                          <td className='text-center'>{count}</td>
                         </tr>
                       ))}
                    </tbody>

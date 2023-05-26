@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
-import { addDoc, collection, query, where, getDocs  } from "@firebase/firestore"
+import { collection, query, where, getDocs  } from "@firebase/firestore"
 import { firestore } from '../firebase'
 import { useAuth } from '../contexts/AuthContext'
-import { getRoles } from '@testing-library/react'
+
 
 export default function NavigationBar() {
 
@@ -18,10 +18,8 @@ export default function NavigationBar() {
            const querySnapshot = await getDocs(q);
    
            querySnapshot.forEach((doc) =>{
-               console.log('setting the role');
                setRole(doc.data().role)
                currentRole = doc.data().role
-               console.log('the role in state inside snapsjot', role);
            })
        }
 
@@ -31,11 +29,12 @@ export default function NavigationBar() {
     <>
         <nav className="navbar navbar-expand-lg card">
             <div className="container-fluid">
-
+                
                 <Link to={'/form'} class="navbar-brand">2T Innovation</Link>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
+
 
                 <div className='nav-items-container'>
                     
